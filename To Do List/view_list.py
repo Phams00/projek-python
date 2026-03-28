@@ -1,5 +1,6 @@
 import os
 import json
+from utils import clrscr, load_task, pause, task_display
 
 class ViewList:
     def __init__(self):
@@ -8,11 +9,12 @@ class ViewList:
     def view(self):
         try:
             while True:
-                os.system('cls' if os.name == 'nt' else 'clear')
+                clrscr()
                 print("==================")
                 print('     To Do List')
                 print("==================")
-                if os.path.exists('list.json') == False:
+                task = load_task()
+                if not task:
                     print('No Task Found')
                     print('Press Enter to return')
                     input()
@@ -20,12 +22,9 @@ class ViewList:
                 else:
                     with open('list.json', 'r') as f:
                         task = json.load(f)
-                    for i, t in enumerate(task, 1):
-                        status = '✓' if t['completed'] else '✗'
-                        print(f'{i}. {t["task"]} [{status}] ')
+                    task_display(task)
                     print('==================')
-                    print('Press Enter to return')
-                    input()
+                    pause()
                     break
         except KeyboardInterrupt:
             print('')

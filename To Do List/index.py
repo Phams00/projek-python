@@ -4,6 +4,7 @@ from add_task import AddTask
 from view_list import ViewList
 from remove_task import RemoveTask
 from marklist import MarkList
+from utils import clrscr, pause
 
 tambah = AddTask()
 lihat = ViewList()
@@ -28,7 +29,7 @@ def main():
     try:
         while True:
             try:
-                os.system('cls' if os.name == 'nt' else 'clear')
+                clrscr()
                 ui()
                 menu_choice = int(input('>>'))
                 if menu_choice == 1:
@@ -41,40 +42,36 @@ def main():
                     tandai.mark()
                 elif menu_choice == 5:
                     if os.path.exists('list.json') == False:
-                        os.system('cls' if os.name == 'nt' else 'clear')
-                        print('No Task Found')
-                        print('Press Enter to return')
-                        input()
+                        clrscr()
+                        print('No Task Found')           
+                        pause()
                     else:
-                        os.system('cls' if os.name == 'nt' else 'clear')
+                        clrscr()
                         print('sure you want to clear the list? (y/n)')
                         choice = input('>>').lower()
                         if choice == 'y':
-                            os.remove('list.json') if os.path.exists('list.json') else None
-                            os.system('cls' if os.name == 'nt' else 'clear')
+                            os.remove('list.json')
+                            clrscr()
                             print('List Cleared')
-                            print('Press Enter to return')
-                            input()
+                            pause()
                         elif choice == 'n':
-                            os.system('cls' if os.name == 'nt' else 'clear')
+                            clrscr()
                             print('List Not Cleared')
-                            print('Press Enter to return')
-                            input()
+                            pause()
                         else:
-                            os.system('cls' if os.name == 'nt' else 'clear')
+                            clrscr()
                             print('Invalid option')
-                            print('Press Enter to return')
-                            input()
+                            pause()
                 elif menu_choice == 0:
                     print('Exiting...')
                     break
                 else:
-                    print('Invalid option, try again.')
+                    print('invalid option')
+                    pause()
 
             except ValueError:
                 print('Invalid input. please enter a number.')
-                print('Press Enter to continue')
-                input()
+                pause()
 
     except EOFError:
         print('')

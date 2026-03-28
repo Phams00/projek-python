@@ -1,5 +1,6 @@
 import json
 import os
+from utils import clrscr, load_task, save_task, pause
 
 class AddTask:
     def __init__(self):
@@ -9,36 +10,31 @@ class AddTask:
             try:
                 while True:
                     try:
-                        os.system('cls' if os.name == 'nt' else 'clear')
+                        clrscr()
                         print("==================")
                         print('     Add Task')
                         print("==================")
                         print('Enter New Task (or type "back" to return):')
-                        task_add = input('>>')
+                        task_add = input('>>').strip()
+                        
                         if task_add.lower() == 'back':
                             break
-                        elif task_add.strip() == '':
+                        elif not task_add:
                             print('Task cannot be empty. try again.')
-                            print('Press Enter to continue')
-                            input()
-                        elif os.path.exists('list.json') == False:
-                            with open('list.json', 'w') as f:
-                                json.dump([{
-                                    "task": task_add,
-                                    "completed": False
-                                }], f)
-                        else:
-                            with open('list.json', 'r') as f:
-                                tasks = json.load(f)
-                            tasks.append({
-                                "task": task_add,
-                                "completed": False
+                            pause()
+                            continue
+                        
+                        task = load_task()
+                        task.append({
+                            'task': task_add,
+                            'completed': False
                             })
-                            with open('list.json', 'w') as f:
-                                json.dump(tasks, f)
+                        save_task(task)
+                        print('Task Added')
+                        pause()
+                        
                     except ValueError:
                         print('Invalid input. please enter a number.')
-                        print('Press Enter to continue')
-                        input()
+                        pause()
             except KeyboardInterrupt:
-                print('')
+                pass

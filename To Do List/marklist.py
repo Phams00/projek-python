@@ -1,5 +1,6 @@
 import os
 import json
+from utils import clrscr, load_task, save_task, pause, task_display, task_status
 
 class MarkList:
     def __init__(self):
@@ -9,15 +10,17 @@ class MarkList:
         try:
             while True:
                 try:
-                    os.system('cls' if os.name == 'nt' else 'clear')
+                    clrscr()
                     print('=======================')
                     print('Mark Task As Completed')
                     print('=======================')
-                    with open('list.json', 'r') as f:
-                        task = json.load(f)
-                    for i, t in enumerate(task, 1):
-                        status = '✓' if t['completed'] else '✗'
-                        print(f'{i}. {t["task"]} [{status}] ')
+                    task = load_task()
+                    if not task:
+                        print('no task found')
+                        pause()
+                        break
+
+                    task_display(task)
                     print('=======================')
                     print('Enter Task Number To Mark (or type "0" to return):')
                     choice = int(input('>>'))
@@ -33,42 +36,33 @@ class MarkList:
                             if mark_choice == 0:
                                 continue
                             elif mark_choice == 1:
-                                with open('list.json', 'r') as f:
-                                    task[choice - 1]['completed'] = True
-                                with open('list.json', 'w') as f:
-                                    json.dump(task, f)
+                                selected_task = task[choice - 1]
+                                selected_task['completed'] = True
+                                save_task(task)
                                 print('Task Marked As Completed')
-                                print('Press Enter To Continue')
-                                input()
+                                pause()
                             elif mark_choice == 2:
-                                with open('list.json', 'r') as f:
-                                    task[choice - 1]['completed'] = False
-                                with open('list.json', 'w') as f:
-                                    json.dump(task, f)
+                                selected_task = task[choice - 1]
+                                selected_task['completed'] = False
+                                save_task(task)
                                 print('Task Marked As Not Completed')
-                                print('Press Enter To Continue')
-                                input()
+                                pause()
                             else:
                                 print('Invalid Choice, try again.')
-                                print('Press Enter To Continue')
-                                input()
+                                pause()
                         except ValueError:
                             print('Invalid input. please enter a number.')
-                            print('Press Enter To Continue')
-                            input()
+                            pause()
                             
                     else:
                         print('Invalid Task Number, try again.')
-                        print('Press Enter To Continue')
-                        input()
+                        pause()
                 except FileNotFoundError:
                     print('No tasks found')
-                    print('Press Enter To Return')
-                    input()
+                    pause()
                     break
                 except ValueError:
                     print('Invalid input. please enter a number.')
-                    print('Press Enter To Continue')
-                    input()
+                    pause()
         except KeyboardInterrupt:
             print('')
