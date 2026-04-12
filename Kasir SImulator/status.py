@@ -1,29 +1,27 @@
 import json
- class Status:
+class Status:
     def __init__(self):
-        self.status_file = 'status.json'
-        self.status = self.load_status()
+        self.uang = 45
+        self.barang_tersedia = []
+        self.shelf1 = True
+        self.shelf2 = False
+        self.shelf3 = False
+        self.shelf4 = False
 
-    def load_status(self):
-        try:
-            with open(self.status_file, 'r') as f:
-                return json.load(f)
-        except FileNotFoundError:
-            return {
-                'total_sales': 0,
-                'total_customers': 0,
-                'products_sold': {}
-            }
+    def to_dict(self):
+        return {
+            'uang': self.uang,
+            'barang_tersedia': self.barang_tersedia,
+            'shelf1': self.shelf1,
+            'shelf2': self.shelf2,
+            'shelf3': self.shelf3,
+            'shelf4': self.shelf4
+        }
 
-    def save_status(self):
-        with open(self.status_file, 'w') as f:
-            json.dump(self.status, f, indent=4)
-
-    def update_sales(self, product_name, quantity):
-        self.status['total_sales'] += quantity
-        self.status['total_customers'] += 1
-        if product_name in self.status['products_sold']:
-            self.status['products_sold'][product_name] += quantity
-        else:
-            self.status['products_sold'][product_name] = quantity
-        self.save_status()
+    def from_dict(self, data):
+        self.uang = data.get('uang', 45)
+        self.barang_tersedia = data.get('barang_tersedia', [])
+        self.shelf1 = data.get('shelf1', True)
+        self.shelf2 = data.get('shelf2', False)
+        self.shelf3 = data.get('shelf3', False)
+        self.shelf4 = data.get('shelf4', False) 

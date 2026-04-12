@@ -7,8 +7,8 @@ class Customer:
         self.produk = pabrik.products
     
     def customer1(self):
-        produk_terpilih = random.choice(list(self.produk.keys()), random.randint(1, 7))
-        self.cart.append(produk_terpilih)
+        produk_terpilih = random.choices(list(self.produk.keys()), k = random.randint(1, 7))
+        self.cart.extend(produk_terpilih)
         print(f"Customer memilih produk:")
         for produk in self.cart:
             print(f"- {produk}")
