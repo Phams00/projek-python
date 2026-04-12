@@ -24,7 +24,7 @@ class Shelf:
             pause()
             return
         if len(self.slot) + jumlah > self.max_slot:
-            print('shelf penuh, tidak bisa menambah produk lagi')
+            print('shelf tidak cukup slot')
             pause()
             return
         self.gudang[nama_produk] -= jumlah
@@ -49,16 +49,27 @@ class Shelf:
     
     def tampilkan_shelf(self):
         print('=============== Isi Shelf ===============')
-        print('')
         isi = Counter(self.slot)
         for produk, jumlah in isi.items():
             print(f'- {produk} x{jumlah}')
         print(f'sisa slot: {self.cek_slot()}')
 
         print('\n=============== Isi Gudang =============')
-        print('')
         for produk, jumlah in self.gudang.items():
             print(f'- {produk} x{jumlah}')
+
+    def to_dict(self): 
+        return {
+            'slot': self.slot,
+            'gudang': self.gudang
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        shelf = cls()
+        shelf.slot = data.get('slot', [])
+        shelf.gudang = data.get('gudang', {})
+        return shelf
 
     def ui_menu_shelf(self):
         print('=============== Menu Shelf ===============\n')

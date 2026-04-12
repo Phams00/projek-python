@@ -3,29 +3,29 @@ from utils import clrscr, pause
 class Pabrik:
     def __init__(self):
         self.products = {
-            'Susu': {'harga beli': 10, 'harga jual': 20},
-            'Roti': {'harga beli': 10, 'harga jual': 20},
-            'Telur': {'harga beli': 10, 'harga jual': 20},
-            'apel': {'harga beli': 10, 'harga jual': 20},
-            'Jeruk': {'harga beli': 10, 'harga jual': 20},
-            'Gula': {'harga beli': 10, 'harga jual': 20},
-            'Tepung': {'harga beli': 10, 'harga jual': 20},
-            'Minyak': {'harga beli': 10, 'harga jual': 20},
-            'Daging': {'harga beli': 10, 'harga jual': 20},
-            'Sayur': {'harga beli': 10, 'harga jual': 20},
-            'Cereal': {'harga beli': 10, 'harga jual': 20},
-            'Kopi': {'harga beli': 10, 'harga jual': 20},
-            'Teh': {'harga beli': 10, 'harga jual': 20},
-            'Air Mineral': {'harga beli': 10, 'harga jual': 20}
+            'Susu': {'harga beli': 10, 'harga jual': 14},
+            'Roti': {'harga beli': 8, 'harga jual': 10},
+            'Telur': {'harga beli': 15, 'harga jual': 18},
+            'apel': {'harga beli': 6, 'harga jual': 9},
+            'Jeruk': {'harga beli': 7, 'harga jual': 10},
+            'Gula': {'harga beli': 20, 'harga jual': 27},
+            'Tepung': {'harga beli': 23, 'harga jual': 30},
+            'Minyak': {'harga beli': 12, 'harga jual': 18},
+            'Daging': {'harga beli': 30, 'harga jual': 38},
+            'Sayur': {'harga beli': 5, 'harga jual': 8},
+            'Cereal': {'harga beli': 14, 'harga jual': 18},
+            'Kopi': {'harga beli': 18, 'harga jual': 25},
+            'Teh': {'harga beli': 18, 'harga jual': 25},
+            'Air Mineral': {'harga beli': 3, 'harga jual': 5}
         }
-        self.barang_tersedia = []
 
     def tambah_produk(self, nama_produk):
         self.products[nama_produk] = 0  # Default price is 0
         print(f"Produk '{nama_produk}' telah ditambahkan ke pabrik.")
 
-    def ui_pabrik(self):
+    def ui_pabrik(self, status):
         print('=============== Pabrik ===============')
+        print(f'Uang: {status.uang}\n')
         print('Produk yang tersedia di pabrik:')
         for i, produk in enumerate(self.products, start=1):
             print(f'{i}, {produk} - Harga Beli: {self.products[produk]["harga beli"]}, Harga Jual: {self.products[produk]["harga jual"]}')
@@ -37,7 +37,7 @@ class Pabrik:
     def menu_pabrik(self, status):
         while True:
             clrscr()
-            self.ui_pabrik()
+            self.ui_pabrik(status)
             pilihan = input('>> ')
             if pilihan.lower() == 'exit':
                 break
@@ -61,11 +61,16 @@ class Pabrik:
                     print('Pembelian dibatalkan.')
                     pause()
                     continue
-                status.uang -= harga_total
-                produk_terpilih = list(self.products.keys())[int(pilihan) - 1]
-                self.barang_tersedia.append(produk_terpilih)
-                print(f'Anda telah membeli {produk_terpilih} dari pabrik.')
-                pause()
+                if status.uang < harga_total:
+                    print('Uang tidak cukup untuk melakukan pembelian.')
+                    pause()
+                    continue
+                else:
+                    status.uang -= harga_total
+                    produk_terpilih = list(self.products.keys())[int(pilihan) - 1]
+                    self.rak.tambah_ke_gudang(produk_terpilih, jumlah)
+                    print(f'Anda telah membeli {jumlah} {produk_terpilih} dari pabrik.')
+                    pause()
             else:
                 print('Pilihan tidak valid. Silakan coba lagi.')
                 pause()

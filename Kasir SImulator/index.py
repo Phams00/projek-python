@@ -11,9 +11,8 @@ from gametime import waktu
 from shelf import Shelf
 
 status = Status()
-pabrik = Pabrik()
+pabrik = Pabrik(status.shelves[0])
 waktu_game = waktu()
-Rak = Shelf()
 
 timer_thread = threading.Thread(target=waktu_game.jalankan_timer)
 timer_thread.daemon = True
@@ -41,9 +40,9 @@ def main():
             choice = input("Pilih menu: ")
             
             if choice == '1':
-                pabrik.menu_pabrik()
+                pabrik.menu_pabrik(status)
             elif choice == '2':
-                Rak.menu_shelf()
+                status.shelves[0].menu_shelf()
             elif choice == '0':
                 print("Terima kasih telah menggunakan Kasir Simulator!")
                 break
