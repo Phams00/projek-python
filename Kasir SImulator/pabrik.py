@@ -31,4 +31,42 @@ class Pabrik:
             print(f'{i}, {produk} - Harga Beli: {self.products[produk]["harga beli"]}, Harga Jual: {self.products[produk]["harga jual"]}')
         print('')
         print('======================================')
-        print()
+        print('Masukkan angka barang yang ingin dibeli ' \
+             '\natau ketik "exit" untuk kembali ke menu utama :')
+
+    def menu_pabrik(self, status):
+        while True:
+            clrscr()
+            self.ui_pabrik()
+            pilihan = input('>> ')
+            if pilihan.lower() == 'exit':
+                break
+            elif 1 <= int(pilihan) <= len(self.products):
+                try:
+                    print('ingin membeli berapa banyak?')
+                    jumlah = int(input('>> '))
+                    if jumlah <= 0:
+                        print('Jumlah harus lebih dari 0.')
+                        pause()
+                        continue
+                except ValueError:
+                    print('Input tidak valid. Harap masukkan angka.')
+                    pause()
+                    continue
+                harga_total = self.products[list(self.products.keys())[int(pilihan) - 1]]['harga beli'] * jumlah
+                print(f'Total harga untuk {jumlah} {list(self.products.keys())[int(pilihan) - 1]} adalah {harga_total}.')
+                print('Apakah Anda ingin melanjutkan pembelian? (y/n)')
+                konfirmasi = input('>> ')
+                if konfirmasi.lower() != 'y':
+                    print('Pembelian dibatalkan.')
+                    pause()
+                    continue
+                status.uang -= harga_total
+                produk_terpilih = list(self.products.keys())[int(pilihan) - 1]
+                self.barang_tersedia.append(produk_terpilih)
+                print(f'Anda telah membeli {produk_terpilih} dari pabrik.')
+                pause()
+            else:
+                print('Pilihan tidak valid. Silakan coba lagi.')
+                pause()
+        

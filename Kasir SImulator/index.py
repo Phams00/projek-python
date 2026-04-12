@@ -2,41 +2,49 @@ import os
 import random
 import time
 import json
-from utils import clrscr, pause, load_task, save_task
+import threading
+from utils import clrscr, pause  
 from pabrik import Pabrik
 from customer import Customer
 from status import Status
 from gametime import waktu
+from shelf import Shelf
 
 status = Status()
 pabrik = Pabrik()
-time = waktu()
+waktu_game = waktu()
+Rak = Shelf()
+
+timer_thread = threading.Thread(target=waktu_game.jalankan_timer)
+timer_thread.daemon = True
+timer_thread.start()
+
 
 def ui_main():
     print("=== Selamat Datang di Kasir Simulator ===")
-    print(f'Hari ke-{time.get_day()} | Uang: {status.uang}')
-    print(f'Sisa Waktu: {time.format_time(time.sisa_waktu())}', end='\n\n')
+    print(f'Hari ke-{waktu_game.get_day()} | Uang: {status.uang}')
+    print(f'Sisa Waktu: {waktu_game.format_time(waktu_game.sisa_waktu())}', end='\n\n')
     print('')
     print("Menu:")
     print("1. Pergi ke pabrik (tambah produk)")
     print("2. Lihat Produk yang tersedia di toko (cek isi shelf)")
     print("3. Pergi ke kasir (checkout)")
+    print("0. Keluar")
 
     print("=========================================")
 
 def main():
     while True:
         try:
+            clrscr()
             ui_main()
             choice = input("Pilih menu: ")
             
             if choice == '1':
-                print("Fitur tambah produk belum tersedia.")
-                input("Tekan Enter untuk melanjutkan...")
+                pabrik.menu_pabrik()
             elif choice == '2':
-                print("Fitur lihat produk belum tersedia.")
-                input("Tekan Enter untuk melanjutkan...")
-            elif choice == '3':
+                Rak.menu_shelf()
+            elif choice == '0':
                 print("Terima kasih telah menggunakan Kasir Simulator!")
                 break
             else:

@@ -5,4 +5,4 @@ def clrscr():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def pause():
-    input()
+    input('tekan enter untuk melanjutkan...')
