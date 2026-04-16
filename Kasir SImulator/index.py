@@ -9,14 +9,22 @@ from customer import Customer
 from status import Status
 from gametime import waktu
 from shelf import Shelf
+from kasir import Kasir
 
 status = Status()
-pabrik = Pabrik(status.shelves[0])
+shelf = status.shelves[0]
+pabrik = Pabrik()
 waktu_game = waktu()
+customer = Customer(pabrik, status)
+gamekasir = Kasir(status)
 
 timer_thread = threading.Thread(target=waktu_game.jalankan_timer)
 timer_thread.daemon = True
 timer_thread.start()
+
+customer_thread = threading.Thread(target=customer.jalankan_customer)
+customer_thread.daemon = True
+customer_thread.start()
 
 
 def ui_main():
@@ -28,7 +36,8 @@ def ui_main():
     print("1. Pergi ke pabrik (tambah produk)")
     print("2. Lihat Produk yang tersedia di toko (cek isi shelf)")
     print("3. Pergi ke kasir (checkout)")
-    print("0. Keluar")
+    print('4. Pergi ke Toko perabot')
+    print("0. Keluar (save & exit)")
 
     print("=========================================")
 
@@ -40,9 +49,11 @@ def main():
             choice = input("Pilih menu: ")
             
             if choice == '1':
-                pabrik.menu_pabrik(status)
+                pabrik.menu_pabrik(status, shelf)
             elif choice == '2':
-                status.shelves[0].menu_shelf()
+                shelf.menu_shelf()
+            elif choice == '3':
+                gamekasir.menu_kasir(customer)
             elif choice == '0':
                 print("Terima kasih telah menggunakan Kasir Simulator!")
                 break
