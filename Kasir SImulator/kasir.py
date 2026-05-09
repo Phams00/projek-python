@@ -1,5 +1,5 @@
 import os
-from utils import clrscr, pause
+from utils import clrscr, pause, wait
 
 class Kasir:
     def __init__(self, status):
@@ -23,7 +23,7 @@ class Kasir:
                 self.ui_menu_kasir(customer)
                 if self.status.customer_antrian is None:
                     print('Tidak ada customer di kasir. Kembali ke menu utama...')
-                    pause()
+                    wait(2.5)
                     break
                 print('[Layani customer!]')
                 print('Tekan Enter untuk menyelesaikan transaksi...')

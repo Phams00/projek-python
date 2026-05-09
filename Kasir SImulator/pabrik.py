@@ -73,8 +73,8 @@ class Pabrik:
                         print(f'Anda telah membeli {jumlah} {produk_terpilih} dari pabrik.')
                         pause()
             except ValueError:
-                continue
-            else:
                 print('Pilihan tidak valid. Silakan coba lagi.')
                 pause()
+                continue
+        
         

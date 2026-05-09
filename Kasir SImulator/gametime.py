@@ -6,15 +6,13 @@ class waktu:
         self.start_time = time.time()
         self.day = 1
 
-    def sisa_waktu(self):
-        elapsed_time = time.time() - self.start_time
+    def sisa_waktu(self):                               #sistem loop sisa waktu dan sekali loop day nambah 1
+        elapsed_time = time.time() - self.start_time 
         sisa = max(0, self.durasi - elapsed_time)
+        if sisa == 0:
+            self.day += 1
+            self.start_time = time.time()
         return int(sisa)
-    
-    def get_day(self):
-        elapsed_time = time.time() - self.start_time
-        self.day = int(elapsed_time // self.durasi) + 1
-        return self.day
     
     def format_time(self, sisa):
         menit = sisa // 60
