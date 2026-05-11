@@ -12,13 +12,13 @@ from shelf import Shelf
 from kasir import Kasir
 from toko_perabot import TokoPerabot
 
-status = Status()
-shelf = Shelf()
-pabrik = Pabrik()
 waktu_game = waktu()
+status = Status(waktu_game)
+shelf = status.shelves[0]  # Menggunakan shelf pertama untuk menyimpan produk yang dibeli dari pabrik
+pabrik = Pabrik()
 toko_perabot = TokoPerabot()
-customer = Customer(pabrik, status, shelf)
-gamekasir = Kasir(status)
+customer = Customer(pabrik, status)
+gamekasir = Kasir(status, pabrik)
 
 timer_thread = threading.Thread(target=waktu_game.jalankan_timer)
 timer_thread.daemon = True
@@ -40,7 +40,8 @@ def ui_main():
     print("3. Pergi ke kasir (checkout)")
     print('4. Pergi ke Toko perabot (upgrade)')
     print("0. Keluar (save & exit)")
-
+    if status.customer_antrian is not None:
+        print('\n[!] Ada customer di kasir! Segera layani!')
     print("=========================================")
 
 #fungsi utama

@@ -2,8 +2,9 @@ import os
 from utils import clrscr, pause, wait
 
 class Kasir:
-    def __init__(self, status):
+    def __init__(self, status, pabrik):
         self.status = status
+        self.pabrik = pabrik
 
     def ui_menu_kasir(self, customer):
         print('=============== Kasir ===============')
@@ -28,10 +29,11 @@ class Kasir:
                 print('[Layani customer!]')
                 print('Tekan Enter untuk menyelesaikan transaksi...')
                 input()
-                total_harga = sum([self.status.shelves[0].gudang.get(item, 0) for item in customer.cart])
+                total_harga = sum([self.pabrik.products[item]['harga jual'] for item in customer.cart])
                 self.status.uang += total_harga
                 print(f'Transaksi selesai! Total harga: {total_harga}. Uang sekarang: {self.status.uang}')
                 customer.cart.clear()
+                self.status.customer_antrian = None
 
             except ValueError:
                 continue

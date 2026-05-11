@@ -4,11 +4,10 @@ from utils import clrscr, pause
 from shelf import Shelf
 
 class Customer:
-    def __init__(self, pabrik, status, shelf):
+    def __init__(self, pabrik, status):
         self.cart = []
         self.produk = pabrik.products
         self.status = status
-        self.shelf = shelf
 
     def coba_muncul(self):  #persen muncul customer dengan menggunakan jumlah slot yang terisi
         shelf = self.status.shelves[0]
@@ -23,7 +22,7 @@ class Customer:
         quantity_barang =  random.randint(1, shelf.slot.count(barang_terpilih[0]))
         barang_terpilih = [barang_terpilih[0]] * quantity_barang
         for i in barang_terpilih:
-            shelf.ambil_dari_shelf(i, quantity_barang)
+            shelf.ambil_dari_shelf(i, 1)
         self.cart.extend(barang_terpilih)
             
     def jalankan_customer(self):
