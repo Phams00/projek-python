@@ -11,6 +11,7 @@ from gametime import waktu
 from shelf import Shelf
 from kasir import Kasir
 from toko_perabot import TokoPerabot
+from savemanager import save, load
 
 waktu_game = waktu()
 status = Status(waktu_game)
@@ -20,7 +21,7 @@ toko_perabot = TokoPerabot()
 customer = Customer(pabrik, status)
 gamekasir = Kasir(status, pabrik)
 
-timer_thread = threading.Thread(target=waktu_game.jalankan_timer)
+timer_thread = threading.Thread(target=waktu_game.jalankan_timer, args=(status,))
 timer_thread.daemon = True
 timer_thread.start()
 
@@ -39,6 +40,7 @@ def ui_main():
     print("2. Urus shelf (cek isi shelf)")
     print("3. Pergi ke kasir (checkout)")
     print('4. Pergi ke Toko perabot (upgrade)')
+    print('5. reset game')
     print("0. Keluar (save & exit)")
     if status.customer_antrian is not None:
         print('\n[!] Ada customer di kasir! Segera layani!')
@@ -48,6 +50,7 @@ def ui_main():
 def main():
     while True:
         try:
+            load(status, waktu_game)
             clrscr()
             ui_main()
             choice = input("Pilih menu: ")
@@ -61,6 +64,7 @@ def main():
             elif choice == '4':
                 toko_perabot.menu_toko_perabot(status)  
             elif choice == '0':
+                save(status, waktu_game)
                 print("Terima kasih telah menggunakan Kasir Simulator!")
                 break
             else:
@@ -68,6 +72,8 @@ def main():
                 input("Tekan Enter untuk melanjutkan...")
 
         except KeyboardInterrupt:
+            break
+        except EOFError:
             break
 
 if __name__ == "__main__":

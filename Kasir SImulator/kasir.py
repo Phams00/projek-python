@@ -34,6 +34,8 @@ class Kasir:
                 print(f'Transaksi selesai! Total harga: {total_harga}. Uang sekarang: {self.status.uang}')
                 customer.cart.clear()
                 self.status.customer_antrian = None
+                pause()
+                break
 
             except ValueError:
                 continue

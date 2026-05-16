@@ -9,7 +9,6 @@ class TokoPerabot:
             'kasir': 30
         }
         self.harga_perabot = harga_perabot
-        self.shelf = Shelf()
 
     def ui_toko_perabot(self, status):
         print('=============== Toko Perabot ===============')
@@ -32,17 +31,22 @@ class TokoPerabot:
                 elif pilihan == 1:
                     if status.uang >= self.harga_perabot['shelf']:
                         status.uang -= self.harga_perabot['shelf']
-                        self.shelf.max_slot += 5  # Menambah kapasitas shelf
-                        print('Anda telah mengupgarde shelf! Kapasitas shelf sekarang:', self.shelf.max_slot)
+                        status.shelves[0].max_slot += 5  # Upgrade shelf dengan menambah kapasitas slot
+                        print('Anda telah mengupgarde shelf! Kapasitas shelf sekarang:', status.shelves[0].max_slot)
+                        pause()
                     else:
                         print('Uang tidak cukup untuk membeli shelf.')
-                    pause()
+                        pause()
                 elif pilihan == 2:
                     if status.uang >= self.harga_perabot['kasir']:
                         status.uang -= self.harga_perabot['kasir']
                         print('Anda telah membeli kasir baru!')
+                        pause()
                     else:
                         print('Uang tidak cukup untuk membeli kasir.')
+                    pause()
+                else:
+                    print('Pilihan tidak valid. Silakan coba lagi.')
                     pause()
             except ValueError:
                 print('Input tidak valid. Harap masukkan angka.')
